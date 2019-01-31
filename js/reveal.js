@@ -4466,8 +4466,13 @@
 			// - The presentation isn't over
 			if( autoSlide && !autoSlidePaused && !isPaused() && !isOverview() && ( !Reveal.isLastSlide() || availableFragments().next || config.loop === true ) ) {
 				autoSlideTimeout = setTimeout( function() {
-					typeof config.autoSlideMethod === 'function' ? config.autoSlideMethod() : navigateNext();
-					cueAutoSlide();
+					if (!(fragment && fragment.hasAttribute('data-autoslide-stop') && fragment.classList.contains('current-fragment'))) {
+						typeof config.autoSlideMethod === 'function' ? config.autoSlideMethod() : navigateNext();
+					}
+
+					if (!(fragment && fragment.hasAttribute('data-autoslide-stop'))) {
+						cueAutoSlide();
+					}
 				}, autoSlide );
 				autoSlideStartTime = Date.now();
 			}
